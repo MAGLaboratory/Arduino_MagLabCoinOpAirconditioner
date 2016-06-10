@@ -1,3 +1,5 @@
+// Fubarino SD, Arduino IDE 1.6.7, chipKIT core 1.1.0
+
 #define COIN_COUNTER 0 //PIN_INT1
 
 volatile uint32_t pennies = 0;
