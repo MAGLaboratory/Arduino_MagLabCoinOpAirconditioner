@@ -1,15 +1,22 @@
 // Fubarino SD, Arduino IDE 1.6.7, chipKIT core 1.1.0
 
+// Coin Counter (CH-924 from Adafruit) Wiring:
+// Red: +12VDC
+// Black: Ground
+// White: No Connect
+// Gray: 10k pullup to 3.3VDC + Pin 0 of Fubarino SD
+
 #define COIN_COUNTER 0 //PIN_INT1
+
 
 volatile uint32_t pennies = 0;
 uint32_t pennies_current = 0;
 uint32_t pennies_last = 0;
 
-int32_t time_s_per_cent = 10;
+int32_t time_s_per_cent = 2;
 int32_t time_remaining  = 0;
 
-// On Peek $0.20/kWh noon - 6pm
+// On Peek $0.20/kWh 12pm - 6pm
 // Mid Peek $0.16/kWh 8am - 12pm, 6pm - 11pm
 // Off Peek $0.14/kWh 11pm - 8am
 
@@ -32,11 +39,12 @@ void delay_counter(uint32_t ms)
 {
   uint32_t start_ms = millis();
   uint32_t end_ms = start_ms + ms;
+/*
   Serial.print(start_ms ,DEC);
   Serial.print(" ");
   Serial.print(end_ms,DEC);
   Serial.print(" ");
-
+*/
   while( millis() < end_ms )
   {
     if( digitalRead(COIN_COUNTER) == LOW )
@@ -68,7 +76,7 @@ void loop() {
   Serial.print(cents,DEC);
   Serial.print(" ");
   Serial.print(time_remaining,DEC);
-  Serial.print(" ");
+  Serial.print(" sec");
   
   Serial.println("");
 
