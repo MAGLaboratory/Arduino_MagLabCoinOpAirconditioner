@@ -82,29 +82,69 @@ void loop()
   {
     uint32_t cents = pennies_current % 100;
     uint32_t dollars = pennies_current / 100;
+    uint32_t hours = time_remaining / 3600;
+    uint32_t minutes = time_remaining / 60;
+    uint32_t seconds = time_remaining;
+    if (hours > 0)
+    {
+      minutes = (time_remaining / 60) - (hours * 60);
+    }
+    if (minutes > 0)
+    {
+      seconds = time_remaining - (minutes * 60);
+    }
     Serial.print(pennies_current, DEC);
     Serial.print(" $");
     Serial.print(dollars, DEC);
     Serial.print(".");
     if ( cents <= 9 ) Serial.print("0");
     Serial.print(cents, DEC);
-    Serial.print(" ");
+    Serial.print(" Time left in seconds: ");
     Serial.print(time_remaining, DEC);
-    Serial.print(" sec");
+    Serial.print(" Time left in HHMMSS Format: ");
+    Serial.print(hours, DEC);
+    Serial.print("hrs ");
+    Serial.print(minutes, DEC);
+    Serial.print("min ");
+    Serial.print(seconds, DEC);
+    Serial.print("sec ");
 
     //lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.print("Funds    ");
-    lcd.print("$");
-    lcd.print(dollars, DEC);
-    lcd.print(".");
-    if ( cents <= 9 ) lcd.print("0");
-    lcd.print(cents, DEC);
-    lcd.print(" ");
+    //lcd.print("Funds    ");
+    //lcd.print("$");
+    //lcd.print(dollars, DEC);
+    //lcd.print(".");
+    //if ( cents <= 9 ) lcd.print("0");
+    //lcd.print(cents, DEC);
+    //lcd.print(" ");
+    //lcd.setCursor(0, 2);
+    //lcd.print("Time    ");
+    lcd.print("Time Remaining:");
     lcd.setCursor(0, 2);
-    lcd.print("Time    ");
-    lcd.print(time_remaining, DEC);
-    lcd.print(" sec");
+    lcd.print("HHMMSS ");
+    if (hours < 10)
+    {
+      lcd.print("0");
+    }
+    lcd.print(hours, DEC);
+    lcd.print(":");
+    //lcd.print("hrs ");
+    if (minutes < 10)
+    {
+      lcd.print("0");
+    }
+    lcd.print(minutes, DEC);
+    lcd.print(":");
+    //lcd.print("min ");
+    if (seconds < 10)
+    {
+      lcd.print("0");
+    }
+    lcd.print(seconds, DEC);
+    //lcd.print("sec");
+    //lcd.print(time_remaining, DEC);
+    //lcd.print(" sec");
 
     Serial.println("");
     digitalWrite(PIN_LED1, HIGH);
