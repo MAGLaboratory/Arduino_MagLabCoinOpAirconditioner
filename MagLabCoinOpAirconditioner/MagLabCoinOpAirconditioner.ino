@@ -9,7 +9,7 @@
 #include <LiquidCrystal_I2C.h>
 
 
-#define COIN_COUNTER 4 //PIN_INT0
+#define COIN_COUNTER 0 //PIN_INT1
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 
@@ -39,7 +39,7 @@ void setup()
 
   pinMode(COIN_COUNTER, INPUT);
   //attachInterrupt(PIN_INT1, intHandle, CHANGE);
-  attachInterrupt(0, intHandle, FALLING); //interruptNum is num of interrupt, not pin
+  attachInterrupt(1, intHandle, FALLING); //interruptNum is num of interrupt, not pin
 }
 
 void delay_counter(uint32_t ms)
