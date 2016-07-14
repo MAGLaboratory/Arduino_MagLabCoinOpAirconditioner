@@ -9,7 +9,7 @@
 #include <LiquidCrystal_I2C.h>
 
 
-#define COIN_COUNTER 0 //PIN_INT1
+#define COIN_COUNTER 4 //PIN_INT0
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
 
@@ -38,7 +38,8 @@ void setup()
   pinMode(PIN_LED1, OUTPUT);
 
   pinMode(COIN_COUNTER, INPUT);
-  attachInterrupt(COIN_COUNTER, intHandle, LOW);
+  //attachInterrupt(PIN_INT1, intHandle, CHANGE);
+  attachInterrupt(0, intHandle, FALLING); //interruptNum is num of interrupt, not pin
 }
 
 void delay_counter(uint32_t ms)
@@ -74,16 +75,15 @@ void loop()
     pennies_last = pennies_current;
   }
 
-  delay_counter(1000);
-
-
-  //delay(1000);
+  //delay_counter(1000);
+  delay(1000);
 
   if ( time_remaining > 0)
   {
     uint32_t cents = pennies_current % 100;
     uint32_t dollars = pennies_current / 100;
-    Serial.print("$");
+    Serial.print(pennies_current, DEC);
+    Serial.print(" $");
     Serial.print(dollars, DEC);
     Serial.print(".");
     if ( cents <= 9 ) Serial.print("0");
@@ -105,23 +105,24 @@ void loop()
     lcd.print("Time    ");
     lcd.print(time_remaining, DEC);
     lcd.print(" sec");
+
     Serial.println("");
     digitalWrite(PIN_LED1, HIGH);
     time_remaining--;
   }
-    else if ( time_remaining <= 0)
-    {
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("Mag Lab Coin-Op");
-      lcd.setCursor(0, 2);
-      lcd.print("Air Conditioner");
-      digitalWrite(PIN_LED1, LOW);
-      Serial.println(pennies);
-    }
-}
-  void intHandle() {
-    pennies++;
+  else
+  {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Mag Lab Coin-Op");
+    lcd.setCursor(0, 2);
+    lcd.print("Air Conditioner");
+    digitalWrite(PIN_LED1, LOW);
+    Serial.println(pennies_current);
   }
+}
+void intHandle() {
+  pennies++;
+}
 
 
